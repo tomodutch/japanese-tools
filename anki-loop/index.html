@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anki loop</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body class="light-mode">
+    <!-- Navbar -->
+    <div class="navbar">
+      <!-- Config section for timers and video URL -->
+      <div>
+        <label for="frontTimer">Front Timer (ms):</label>
+        <input type="number" id="frontTimer" value="5000">
+        <label for="backTimer">Back Timer (ms):</label>
+        <input type="number" id="backTimer" value="5000">
+        <label for="videoUrl">Video URL:</label>
+        <input
+          type="url"
+          id="videoUrl"
+          placeholder="YouTube video URL"
+          value="https://www.youtube.com/embed/cH7VBI4QQzA?autoplay=1&mute=1&loop=1&playlist=cH7VBI4QQzA">
+        <button type="button" onclick="applyConfig()">Apply</button>
+      </div>
+
+      <!-- Anki deck selection -->
+      <div>
+        <label for="deck">Deck:</label>
+        <select id="deck"></select>
+        <label for="filter">Filter:</label>
+        <select id="filter">
+          <option value="all">All Cards</option>
+          <option value="today">Added Today</option>
+          <option value="wrongToday">Wrong Today</option>
+        </select>
+        <button type="button" onclick="startPractice()">Start Practice</button>
+      </div>
+
+      <!-- Theme switcher -->
+      <div class="theme-toggle" onclick="toggleTheme()" id="themeToggle">
+        🌙
+      </div>
+    </div>
+    <iframe
+      title="bgVideo"
+      class="background-video"
+      src="https://www.youtube.com/embed/cH7VBI4QQzA?autoplay=1&mute=1&loop=1&playlist=cH7VBI4QQzA"
+      id="bgVideo"
+      allowfullscreen
+      allow="autoplay"
+    >
+    </iframe>
+    <div class="content">
+      <div id="kanjiDisplay">漢字</div>
+      <div id="loadingBarContainer">
+        <div id="loadingBar"></div>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>
