@@ -1,12 +1,10 @@
 // Configurable timers and video
-let intervalFront = parseInt(document.getElementById("frontTimer").value);
-let intervalBack = parseInt(document.getElementById("backTimer").value);
+let timer = parseInt(document.getElementById("frontTimer").value);
 const videoFrame = document.getElementById("bgVideo");
 
 // Update configuration on apply
 function applyConfig() {
-  intervalFront = parseInt(document.getElementById("frontTimer").value);
-  intervalBack = parseInt(document.getElementById("backTimer").value);
+  timer = parseInt(document.getElementById("frontTimer").value);
   const videoUrlElement = document.getElementById("videoUrl");
   if (videoUrlElement.value) {
     const embedUrl = getYoutubeEmbedUrl(
@@ -38,7 +36,8 @@ window.onload = () => {
 
 // Async functions for deck management and Anki interaction
 async function ankiConnect(action, params = {}) {
-  const response = await fetch("http://127.0.0.1:8765", {
+  const ankiHost = document.getElementById("ankiHost").value;
+  const response = await fetch(ankiHost, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ action, version: 6, params }),
@@ -94,18 +93,18 @@ async function displayCard() {
   document.getElementById("kanjiDisplay").innerHTML = filterCardHtml(
     cardInfo[0].question
   );
-  startLoadingBar(intervalFront, true);
+  startLoadingBar(timer, true);
   window.clearTimeout(cardTimeout);
-  cardTimeout = setTimeout(() => displayBack(cardInfo[0]), intervalFront);
+  cardTimeout = setTimeout(() => displayBack(cardInfo[0]), timer);
 }
 
 function displayBack(card) {
   document.getElementById("kanjiDisplay").innerHTML = filterCardHtml(
     card.answer
   );
-  startLoadingBar(intervalBack, false);
+  startLoadingBar(timer, false);
   window.clearTimeout(cardTimeout);
-  cardTimeout = setTimeout(displayCard, intervalBack);
+  cardTimeout = setTimeout(displayCard, timer);
 }
 
 function startLoadingBar(duration, isFront) {
@@ -145,3 +144,9 @@ function setTheme() {
     document.body.classList.toggle("dark-mode", event.matches);
   });
 }
+
+window.onload(() => {
+  debugger;
+  loadDecks();
+  setTheme();
+});
