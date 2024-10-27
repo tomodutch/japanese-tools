@@ -5,6 +5,7 @@ const videoFrame = document.getElementById("bgVideo");
 // Update configuration on apply
 function applyConfig() {
   timer = parseInt(document.getElementById("frontTimer").value);
+  loadDecks();
   const videoUrlElement = document.getElementById("videoUrl");
   if (videoUrlElement.value) {
     const embedUrl = getYoutubeEmbedUrl(
