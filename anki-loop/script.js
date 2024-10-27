@@ -52,6 +52,7 @@ async function loadDecks() {
   try {
     const decks = await ankiConnect("deckNames");
     const deckSelect = document.getElementById("deck");
+    deckSelect.innerHTML = "";
     decks.forEach((deck) => {
       const option = document.createElement("option");
       option.value = deck;
@@ -82,6 +83,7 @@ function buildQuery(deckName, filterType) {
   let query = `deck:"${deckName}"`;
   if (filterType === "today") query += ` is:new added:1`;
   else if (filterType === "wrongToday") query += ` rated:1:1`;
+  else if (filterType === "new") query += ` is:new`
   return query;
 }
 
