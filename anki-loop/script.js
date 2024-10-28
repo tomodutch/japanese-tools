@@ -67,10 +67,11 @@ async function loadDecks() {
 let cardIDs = [];
 let cardTimeout = null;
 async function startPractice() {
-  const deckName = document.getElementById("deck").value;
+  const selectElm = document.getElementById("deck");
+  const deckNames = Array.from(selectElm.selectedOptions).map(o => o.value);
   const filterType = document.getElementById("filter").value;
   try {
-    const query = buildQuery(deckName, filterType);
+    const query = buildQuery(deckNames, filterType);
     cardIDs = await ankiConnect("findCards", { query });
     if (cardIDs.length === 0) return alert("No cards found.");
     displayCard();
@@ -79,8 +80,16 @@ async function startPractice() {
   }
 }
 
-function buildQuery(deckName, filterType) {
-  let query = `deck:"${deckName}"`;
+function buildQuery(deckNames, filterType) {
+  let query = deckNames.reduce((query, deckName, i) => {
+    if (i !== 0) {
+      query += "OR ";
+    }
+
+    query += `deck:"${deckName}" `;
+    return query;
+  }, "(") + ") ";
+  debugger;
   if (filterType === "today") query += ` is:new added:1`;
   else if (filterType === "wrongToday") query += ` rated:1:1`;
   else if (filterType === "new") query += ` is:new`
@@ -149,7 +158,6 @@ function setTheme() {
 }
 
 window.onload(() => {
-  debugger;
   loadDecks();
   setTheme();
 });
